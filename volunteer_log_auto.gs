@@ -1,4 +1,4 @@
-
+//This function adds a custom menu
 function onOpen(){
   const ui = SpreadsheetApp.getUi();
   const menu = ui.createMenu('Update Sheets');
@@ -6,6 +6,7 @@ function onOpen(){
       .addToUi();
 }
 
+//This function is to add Sample Project Block into the 'Full Project List' sheet to add new projects
 function createNewProject(){
   var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   var gridId = spreadSheet.getSheetId();
@@ -15,10 +16,12 @@ function createNewProject(){
   var templateData = templateRange.getValues();
   var targetRange = mainSheet.getRange(mainSheet.getLastRow()+1, 1, 9,mainSheet.getLastColumn());
 
-  templateRange.copyTo(targetRange);
+  templateRange.copyTo(targetRange); //copies template to target sheet
 
 }
 
+//This function will copy the project information from 'Full Project List' sheet to 'Active Project Dashboard' when the tickbox is clicked
+//The function will also delete any projects that are unclicked from the 'Active Project Dashboard'
 function onEdit() {
   // assumes source data in sheet named main
   // target sheet of move to named Completed
