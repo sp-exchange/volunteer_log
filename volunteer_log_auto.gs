@@ -3,7 +3,7 @@ function onOpen(){
   const ui = SpreadsheetApp.getUi();
   const menu = ui.createMenu('Update Sheets');
   menu.addItem('Add New Project', 'createNewProject')
-      .addItem('Update Dashboard', 'copyRows1')
+      .addItem('Update Dashboard', 'updateDashboard')
       .addToUi();
 }
 
@@ -19,7 +19,7 @@ function createNewProject(){
 
 }
 
-function copyRows1() {
+function updateDashboard() {
   var sSheet = SpreadsheetApp.getActiveSpreadsheet();
   var srcSheet = sSheet.getSheetByName("Full Project List");
   var tarSheet = sSheet.getSheetByName("Active Project Dashboard");
@@ -50,39 +50,9 @@ function copyRows1() {
 };
 
 
+
+
 /*
-function copyDelete() {
-  var sSheet = SpreadsheetApp.getActiveSpreadsheet();
-  var srcSheet = sSheet.getSheetByName("Full Project List");
-  var tarSheet = sSheet.getSheetByName("Active Project Dashboard");
-  var lastRow = srcSheet.getLastRow();
-  var lastColumn = srcSheet.getLastColumn();
-  var srcData = srcSheet.getRange(1,1, lastRow, lastColumn);
-  var tarData = tarSheet.getRange(1,1);
-  
-  srcData.copyTo(tarData);
-
-  
-  
-  var data = tarSheet.getDataRange().getValues();    
-  
-  for (var i = data.length - 1; i >= 1; i--) {
-    
-      if (data[i][5] == false) {
-      tarSheet.deleteRows(i+1);
-      }
-  }
-};
-
-
-
-
-
-
-
-
-
-
 //This function will copy the project information from 'Full Project List' sheet to 'Active Project Dashboard' when the tickbox is clicked
 //The function will also delete any projects that are unclicked from the 'Active Project Dashboard'
 function onEdit() {
