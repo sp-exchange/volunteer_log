@@ -1,24 +1,87 @@
-//This function adds a custom menu
+
 function onOpen(){
   const ui = SpreadsheetApp.getUi();
   const menu = ui.createMenu('Update Sheets');
   menu.addItem('Add New Project', 'createNewProject')
+      .addItem('Update Dashboard', 'copyRows1')
       .addToUi();
 }
 
 //This function is to add Sample Project Block into the 'Full Project List' sheet to add new projects
 function createNewProject(){
   var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  var gridId = spreadSheet.getSheetId();
   var mainSheet = spreadSheet.getSheetByName("Full Project List");
   var templateSheet = spreadSheet.getSheetByName("Sample Project Block");
   var templateRange = templateSheet.getRange(2,1,9, mainSheet.getLastColumn());
-  var templateData = templateRange.getValues();
   var targetRange = mainSheet.getRange(mainSheet.getLastRow()+1, 1, 9,mainSheet.getLastColumn());
 
   templateRange.copyTo(targetRange); //copies template to target sheet
 
 }
+
+function copyRows1() {
+  var sSheet = SpreadsheetApp.getActiveSpreadsheet();
+  var srcSheet = sSheet.getSheetByName("Full Project List");
+  var tarSheet = sSheet.getSheetByName("Active Project Dashboard");
+  var lastRow = srcSheet.getLastRow();
+  var lastColumn =srcSheet.getLastColumn();
+
+  var start = 2; //Hard coded row number from where to start deleting
+
+  var howManyToDelete = tarSheet.getLastRow() - start + 1;//How many rows to delete -
+      //The blank rows after the last row with content will not be deleted
+
+  tarSheet.deleteRows(start, howManyToDelete);
+
+  for (var i = 2; i <= lastRow; i+=9) {
+    var cell = srcSheet.getRange("F" + i);
+    var val = cell.getValue();
+    if (val == true) {
+      
+      var srcRange = srcSheet.getRange(i, 1, 9, lastColumn);
+      
+      var tarRow = tarSheet.getLastRow();
+      tarSheet.insertRowAfter(tarRow);
+      var tarRange = tarSheet.getRange(tarRow+1, 1);
+      
+      srcRange.copyTo(tarRange);
+    }
+  }
+};
+
+
+/*
+function copyDelete() {
+  var sSheet = SpreadsheetApp.getActiveSpreadsheet();
+  var srcSheet = sSheet.getSheetByName("Full Project List");
+  var tarSheet = sSheet.getSheetByName("Active Project Dashboard");
+  var lastRow = srcSheet.getLastRow();
+  var lastColumn = srcSheet.getLastColumn();
+  var srcData = srcSheet.getRange(1,1, lastRow, lastColumn);
+  var tarData = tarSheet.getRange(1,1);
+  
+  srcData.copyTo(tarData);
+
+  
+  
+  var data = tarSheet.getDataRange().getValues();    
+  
+  for (var i = data.length - 1; i >= 1; i--) {
+    
+      if (data[i][5] == false) {
+      tarSheet.deleteRows(i+1);
+      }
+  }
+};
+
+
+
+
+
+
+
+
+
 
 //This function will copy the project information from 'Full Project List' sheet to 'Active Project Dashboard' when the tickbox is clicked
 //The function will also delete any projects that are unclicked from the 'Active Project Dashboard'
@@ -60,4 +123,4 @@ function onEdit() {
   }
 }
 
-
+*/
